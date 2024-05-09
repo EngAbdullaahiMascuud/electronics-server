@@ -24,6 +24,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(cors());
 
+app.get("/",(req,res)=>{
+  return res.json({
+    message : "server is runing 😂😂😂😂"
+  })
+})
 
 
 app.use('/foods', foodRouter)
