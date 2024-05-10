@@ -3,7 +3,7 @@ const conn = require("../db/db.config");
 module.exports = {
   countAllRows: function (req, res) {
     const {table}=req.params;
-    conn.getConnection.query("SELECT count(*) as row FROM "+table, (error, data) => {
+    conn.getConnection.query("SELECT count(*) as row FROM foods", (error, data) => {
       if (error)
         return res.send({
           status: false,
