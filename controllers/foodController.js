@@ -79,7 +79,7 @@ module.exports = {
   },
   fetchSingle: function (req, res) {
     var sql =
-      "Select *from foods inner join categories on  foods.category_id = categories.cat_id where foods.id=?";
+      "Select *from foods inner join categories on  foods.category_id = categories.cat_id where foods.category_id=?";
     db.getConnection.query(sql, [req.params.id], (err, result) => {
       if (err) {
         return res.send({
@@ -126,12 +126,12 @@ module.exports = {
     });
   },
   insertIntoFoodMenu: function (req, res) {
-    const { name, price, category_id } = req.body;
+    const { name, price, category_id,description } = req.body;
     var sql =
-      "Insert into foods (food_name, price, category_id, image, status) VALUE (?,?,?,?,?)";
+      "Insert into foods (food_name, price, category_id, image, status,eDescription) VALUE (?,?,?,?,?,?)";
     db.getConnection.query(
       sql,
-      [name, price, category_id, req.file.filename, "yes"],
+      [name, price, category_id, req.file.filename, "yes",description],
       (err, result) => {
         if (err) {
           return res.send({
@@ -152,10 +152,10 @@ module.exports = {
   },
   updateFoodMenu: function (req, res) {
     const { id } = req.params;
-    const { name, price, category_id, default_image } = req.body;
+    const { name, price, category_id, default_image,description } = req.body;
 
     var sql =
-      "Update foods set food_name = ?, price = ?, category_id = ?, image = ? WHERE id = ?";
+      "Update foods set food_name = ?, price = ?, category_id = ?, image = ?,eDescription=? WHERE id = ?";
     db.getConnection.query(
       sql,
       [
@@ -163,6 +163,7 @@ module.exports = {
         price,
         category_id,
         req.file ? req.file.filename : default_image,
+        description,
         id,
       ],
       (err, result) => {

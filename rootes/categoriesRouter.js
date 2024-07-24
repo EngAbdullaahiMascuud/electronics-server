@@ -1,8 +1,8 @@
 const express = require('express')
-const { addCategory, readCategories,updateCategories, deleteCategory, fetchSingle, checkCategory } = require('../controllers/categories');
+const { addCategory, readCategories,updateCategories, deleteCategory, fetchSingle, checkCategory, uploadImageCategory } = require('../controllers/categories');
 const router = express.Router();
 
-router.post('/addCategory', addCategory);
+router.post('/addCategory',uploadImageCategory().single("image"), addCategory);
 router.post("/checkCategory", checkCategory);
 
 router.get('/', readCategories)

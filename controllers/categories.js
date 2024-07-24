@@ -1,8 +1,23 @@
 const e = require("express");
 const db = require("../db/db.config");
 const express = require("express");
-
+const multer = require("multer");
+const path= require("path")
+const cr = require("crypto")
 module.exports = {
+  uploadImageCategory: (req, res) => {
+    var multerStg = multer.diskStorage({
+      destination: "./public/uploads",
+      filename: (req, file, cb) => {
+        cb(null, `${cr.randomUUID()}${path.extname(file.originalname)}`);
+      },
+    });
+
+    const uploader = multer({
+      storage: multerStg,
+    });
+    return uploader;
+  },
   readCategories: function (req, res) {
     sql = "Select *from categories";
     db.getConnection.query(sql, (err, result) => {
@@ -79,8 +94,8 @@ module.exports = {
 
   addCategory: function (req, res) {
     const { name, description } = req.body;
-    var sql = "INSERT into categories(name, description) VALUES (?,?)";
-    db.getConnection.query(sql, [name, description], (err, result) => {
+    var sql = "INSERT into categories(name, description,photo) VALUES (?,?,?)";
+    db.getConnection.query(sql, [name, description,req.file ? req.file.filename : ""], (err, result) => {
       if (err) {
         return res.send({
           message: "Error occured on add new category!",
